@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheather-forecast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border: 0;
+            outline: none;
+            font-family: sans-serif;
+        }
+        body{
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color:black;
+        }
+        .container{
+            width: 400px;
+            height: fit-content;
+            background-color: white;
+            padding: 28px;
+            border-radius: 10px;
+        }
+        .header{
+            width: 100%;
+            height: min-content;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        input{
+            width: 80%;
+            font-size: 20px;
+            text-transform: capitalize;
+            background-color: lightblue;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        ::placeholder{
+            color: black;
+        }
+        .header button{
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            background-color: lightblue;
+        }
+        .header button:hover{
+            cursor: pointer;
+            background-color: burlywood;
+            color: white;
+        }
+        .weather-body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 17px;
+        }
+        .weather-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        font-size: 19px;
+        font-weight: bold;
+        }
+        .weather-details{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+
+        }
+        .humidity,.wind{
+            display: flex;
+            align-items: center;
+        }
+    .weather-details i{
+        font-size: 30px;
+        padding: 5px;
+    }
+    
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <input type="text" id="location" name="location" placeholder="Enter Your location"/>
+            <button class="fa-solid fa-magnifying-glass" id="searchBtn"></button>
+        </div>
+        <div class="weather-body">
+            <img src="../images/img2.jpg" alt="img1" class="weather-img" width="200px"/>
+            <div class="weather-box">
+                <p class="temp">0 °C</p>
+                <p class="desc">Clear sky</p>
+            </div>
+            <div class="weather-details">
+                <div class="humidity">
+                    <i class="fa-solid fa-droplet"></i>
+                    <div class="text">
+                        <span id="humidity">43%</span>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+
+                <div class="wind">
+                    <i class="fa-solid fa-wind"></i>
+                    <div class="text-1">
+                        <span id="wind-speed">12 Kmph</span>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+                
+            </div>
+            <div style="margin-top: 20px;"><strong id="credit">Updated just now</strong></div>
+        </div>
+        
+    </div>
+    <script>
+        const inputbox = document.getElementById('location');
+        const searchbtn = document.getElementById('searchBtn');
+        const weatherimg = document.querySelector('.weather-img');
+        const temperature = document.querySelector('.temp');
+        const description = document.querySelector('.desc');
+        const humidity = document.getElementById('humidity');
+        const wind_speed = document.getElementById('wind-speed');
+
+
+       async function checkWeather(city){
+
+            const api_key = 'be247cb7771b6bc23b7408c81f16de27';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
+
+            const weather_data = await fetch(url).then(response=>response.json());
+            console.log((weather_data));
+            
+            temperature.innerHTML=`${Math.round(weather_data.main.temp-273.15)}°C`
+            description.innerHTML=`${weather_data.weather[0].description}`
+            humidity.innerHTML=`${weather_data.main.humidity}%`
+            wind_speed.innerHTML=`${weather_data.wind.speed} Kmph`
+
+            
+
+        }
+
+       
+            searchbtn.addEventListener('click',()=>{
+                checkWeather(inputbox.value)
+            })
+        
+
+    </script>
+</body>
+</html>
